@@ -39,15 +39,19 @@
 
 В отчёте: железо, настройки Windows, Deadlock и OBS, названия программ из автозагрузки и запущенных во время проверки и матча с их нагрузкой, находки программы, сводка и показания замера, случайный номер установки. В отчёт не попадают: имя пользователя и пути с ним, ключ трансляции, токены, названия сетей Wi-Fi, IP-адреса, серийные номера. Содержимое можно посмотреть кнопкой «Посмотреть, что уходит». Без этого разрешения программа работает так же.
 
+Пока отчёты разрешены, программа раз в 15 минут (кроме времени матча) спрашивает у сервера, не написал ли автор. Сообщение появляется на вкладке «Помощь». Автор пишет на номер установки и не знает, кто ты; отвечать не обязательно.
+
 ## Что ещё не проверено
 
 - Вывод сверен на одном настоящем матче и одном ноутбуке. На другом железе пороги могут промахиваться: для их уточнения и нужны отчёты.
 - Настольные ПК, видеокарты AMD и Intel, Windows 10 и английская Windows учтены в коде, но вживую не проверялись.
-- Сам FPS программа пока не показывает: вывод идёт по загрузке процессора и видеокарты. Точный счётчик по времени кадра экспериментальный: ему нужны права администратора, и с ними он ещё не запускался.
+- Без экспериментального счётчика программа не показывает сам FPS: вывод идёт по загрузке процессора и видеокарты. Счётчику нужны права администратора. На настоящем матче он работал пока на одном компьютере.
+- На процессорах Intel с двумя типами ядер показанная частота завышена: на i5-12450H программа показала 5,2 ГГц при потолке 4,4.
 - Настройка конфига проверена на тестовой папке игры. В самой игре её блок в `autoexec.cfg` ещё не запускался.
 - Режим ноутбука программа определяет сама только у ASUS. Для других марок она даёт инструкцию и судит по измеренной частоте процессора.
 - Температуру процессора программа не читает: без прав администратора Windows её не отдаёт. Перегрев виден косвенно, по падению частоты.
-- Цена замера снята без запущенной игры (около 1% одного ядра, 50–60 МБ памяти). В матче она ещё не измерена.
+- Цена замера в настоящей игре снята пока на одном компьютере: в среднем 0,5% одного ядра за четыре часа.
+- Потери до интернета меряются пингом до одного адреса (1.1.1.1). Такой сервер может отбрасывать пинг сам, поэтому находка «пакеты теряются у провайдера» может срабатывать зря: это ещё проверяется.
 - Обновление с настоящих выпусков здесь ещё не проходило: этот путь проверен на локальной копии GitHub.
 
 ## О проекте
@@ -97,15 +101,19 @@ If you allow it (a box on the first screen, a switch on the Help tab), the app s
 
 In a report: hardware, Windows, Deadlock and OBS settings, the names of startup apps and of apps running during a check or a match with their load, the app's findings, the session summary and readings, a random number of this installation. Not in a report: the user name and paths with it, the stream key, tokens, Wi-Fi network names, IP addresses, serial numbers. You can view the contents with the "See what goes out" button. Without this permission the app works just the same.
 
+While reports are allowed, the app asks the server every 15 minutes (except during a match) whether the author has written. A message appears on the Help tab. The author writes to the installation number and does not know who you are; you do not have to answer.
+
 ## Not checked yet
 
 - The verdict has been checked on one real match and one laptop. On other hardware the thresholds may miss: that is what the reports are for.
 - Desktop PCs, AMD and Intel GPUs, Windows 10 and English-language Windows are handled in the code but not checked live.
-- The app does not show an FPS figure yet: the verdict comes from CPU and GPU load. The exact counter from frame times is experimental: it needs administrator rights and has not been run with them.
+- Without the experimental counter the app shows no FPS figure: the verdict comes from CPU and GPU load. The counter needs administrator rights. It has worked in a real match on one computer so far.
+- On Intel CPUs with two kinds of cores the frequency shown is too high: on an i5-12450H the app showed 5.2 GHz against a ceiling of 4.4.
 - The config tuner has been tested on a test copy of the game folder. Its block in `autoexec.cfg` has not been run in the game itself.
 - The app detects the laptop performance mode by itself only on ASUS. For other brands it gives instructions and judges by the measured CPU frequency.
 - The app does not read the CPU temperature: Windows does not give it out without administrator rights. Overheating shows indirectly, through frequency drops.
-- The cost of measuring was taken without the game running (about 1% of one core, 50–60 MB of memory). It has not been measured during a match.
+- The cost of measuring in a real game has been taken on one computer so far: 0.5% of one core on average over four hours.
+- Loss to the internet is measured by pinging one address (1.1.1.1). Such a server may drop pings by itself, so the "packets are lost at the provider" finding may fire for nothing: this is still being checked.
 - Updating from real releases here has not happened yet: that path has been tested on a local copy of GitHub.
 
 ## About
