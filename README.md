@@ -52,7 +52,6 @@
 - Температуру процессора программа не читает: без прав администратора Windows её не отдаёт. Перегрев виден косвенно, по падению частоты.
 - Цена замера в настоящей игре снята пока на одном компьютере: в среднем 0,5% одного ядра за четыре часа.
 - Потери до интернета меряются пингом до одного адреса (1.1.1.1). Такой сервер может отбрасывать пинг сам, поэтому находка «пакеты теряются у провайдера» может срабатывать зря: это ещё проверяется.
-- Обновление с настоящих выпусков здесь ещё не проходило: этот путь проверен на локальной копии GitHub.
 
 ## О проекте
 
@@ -114,7 +113,6 @@ While reports are allowed, the app asks the server every 15 minutes (except duri
 - The app does not read the CPU temperature: Windows does not give it out without administrator rights. Overheating shows indirectly, through frequency drops.
 - The cost of measuring in a real game has been taken on one computer so far: 0.5% of one core on average over four hours.
 - Loss to the internet is measured by pinging one address (1.1.1.1). Such a server may drop pings by itself, so the "packets are lost at the provider" finding may fire for nothing: this is still being checked.
-- Updating from real releases here has not happened yet: that path has been tested on a local copy of GitHub.
 
 ## About
 
