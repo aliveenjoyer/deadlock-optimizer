@@ -33,9 +33,26 @@
 
 Файлы `DeadlockOptimizer.exe.sha256` и `DeadlockOptimizer.exe.sig` в выпусках нужны для этой проверки, руками их качать не надо.
 
+## Обезличенные отчёты
+
+Если разрешить (галочка на первом экране, выключатель на вкладке «Помощь»), программа сама отправляет отчёт на наш сервер после каждого замеренного матча и раз в неделю после проверки. По ним уточняются пороги и советы.
+
+В отчёте: железо, настройки Windows, Deadlock и OBS, названия программ из автозагрузки и запущенных во время проверки и матча с их нагрузкой, находки программы, сводка и показания замера, случайный номер установки. В отчёт не попадают: имя пользователя и пути с ним, ключ трансляции, токены, названия сетей Wi-Fi, IP-адреса, серийные номера. Содержимое можно посмотреть кнопкой «Посмотреть, что уходит». Без этого разрешения программа работает так же.
+
+## Что ещё не проверено
+
+- Вывод сверен на одном настоящем матче и одном ноутбуке. На другом железе пороги могут промахиваться: для их уточнения и нужны отчёты.
+- Настольные ПК, видеокарты AMD и Intel, Windows 10 и английская Windows учтены в коде, но вживую не проверялись.
+- Сам FPS программа пока не показывает: вывод идёт по загрузке процессора и видеокарты. Точный счётчик по времени кадра экспериментальный: ему нужны права администратора, и с ними он ещё не запускался.
+- Настройка конфига проверена на тестовой папке игры. В самой игре её блок в `autoexec.cfg` ещё не запускался.
+- Режим ноутбука программа определяет сама только у ASUS. Для других марок она даёт инструкцию и судит по измеренной частоте процессора.
+- Температуру процессора программа не читает: без прав администратора Windows её не отдаёт. Перегрев виден косвенно, по падению частоты.
+- Цена замера снята без запущенной игры (около 1% одного ядра, 50–60 МБ памяти). В матче она ещё не измерена.
+- Обновление с настоящих выпусков здесь ещё не проходило: этот путь проверен на локальной копии GitHub.
+
 ## О проекте
 
-Ранняя версия. Пороги выводов ещё уточняются на реальных матчах, точный счётчик FPS помечен в программе как экспериментальный.
+Ранняя версия.
 
 Фанатская программа, к Valve отношения не имеет. Deadlock является товарным знаком Valve Corporation. В этом репозитории лежат готовые сборки.
 
@@ -74,8 +91,25 @@ The app updates itself: it finds a new release here, downloads it and installs i
 
 The files `DeadlockOptimizer.exe.sha256` and `DeadlockOptimizer.exe.sig` in the releases are there for that check; there is no need to download them by hand.
 
+## Anonymous reports
+
+If you allow it (a box on the first screen, a switch on the Help tab), the app sends a report to our server by itself after every measured match and once a week after a check. The thresholds and the advice are refined by them.
+
+In a report: hardware, Windows, Deadlock and OBS settings, the names of startup apps and of apps running during a check or a match with their load, the app's findings, the session summary and readings, a random number of this installation. Not in a report: the user name and paths with it, the stream key, tokens, Wi-Fi network names, IP addresses, serial numbers. You can view the contents with the "See what goes out" button. Without this permission the app works just the same.
+
+## Not checked yet
+
+- The verdict has been checked on one real match and one laptop. On other hardware the thresholds may miss: that is what the reports are for.
+- Desktop PCs, AMD and Intel GPUs, Windows 10 and English-language Windows are handled in the code but not checked live.
+- The app does not show an FPS figure yet: the verdict comes from CPU and GPU load. The exact counter from frame times is experimental: it needs administrator rights and has not been run with them.
+- The config tuner has been tested on a test copy of the game folder. Its block in `autoexec.cfg` has not been run in the game itself.
+- The app detects the laptop performance mode by itself only on ASUS. For other brands it gives instructions and judges by the measured CPU frequency.
+- The app does not read the CPU temperature: Windows does not give it out without administrator rights. Overheating shows indirectly, through frequency drops.
+- The cost of measuring was taken without the game running (about 1% of one core, 50–60 MB of memory). It has not been measured during a match.
+- Updating from real releases here has not happened yet: that path has been tested on a local copy of GitHub.
+
 ## About
 
-An early version. The thresholds behind the verdicts are still being tuned on real matches, and the exact FPS counter is marked as experimental in the app.
+An early version.
 
 A fan-made tool, not affiliated with Valve. Deadlock is a trademark of Valve Corporation. This repository holds ready builds.
