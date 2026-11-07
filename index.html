@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#05070d">
+<title>Deadlock Optimizer</title>
+<meta name="description" content="">
+<!-- Every text of this page lives in landing.js (one dictionary, Russian and English); the markup carries only keys.
+     All addresses of the page's own files are relative and nothing is loaded from another host. The only outside
+     address is the author's link, which landing.js puts on two plain links (AUTHOR_URL).
+     Sharing tags: the picture is assets/art/og.png (1200 x 630, Russian). Before publishing, put the final address
+     into og:url and make og:image absolute (https://<site>/assets/art/og.png): crawlers do not resolve relative ones. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Deadlock Optimizer: у твоего FPS есть причина">
+<meta property="og:description" content="Бесплатная диагностика производительности для Deadlock. Измеряет компьютер во время матча и говорит, что ограничивает FPS и что исправить первым.">
+<meta property="og:url" content="https://aliveenjoyer.art/deadlock-optimizer/">
+<meta property="og:image" content="https://aliveenjoyer.art/deadlock-optimizer/assets/art/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Crect width='24' height='24' rx='5' fill='%2305070d'/%3E%3Cpath d='M5.5 4v16M5.5 4h5a8 8 0 0 1 7.3 11.3' stroke='%23f1f5fb' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M5.5 20h4.3' stroke='%23f1f5fb' stroke-width='1.5' stroke-linecap='round'/%3E%3Ccircle cx='14.4' cy='18.9' r='1.9' fill='%234594fa'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="landing.css">
+<script src="landing.js"></script>
+</head>
+<body id="top">
+
+<a class="skip" href="#main" data-t="a11y.skip"></a>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M5.5 4v16M5.5 4h5a8 8 0 0 1 7.3 11.3" fill="none" stroke="#f1f5fb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M5.5 20h4.3" fill="none" stroke="#f1f5fb" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="14.4" cy="18.9" r="1.9" fill="#4594fa"/>
+      </svg>
+      <span class="brand-name" data-app-name>Deadlock Optimizer</span>
+    </a>
+    <nav class="top-nav" data-t-attr="aria-label:nav.label">
+      <a href="#how" data-t="nav.how"></a>
+      <a href="#checks" data-t="nav.checks"></a>
+      <a href="#safety" data-t="nav.safety"></a>
+      <a href="#faq" data-t="nav.faq"></a>
+    </nav>
+    <div class="lang" role="group" data-t-attr="aria-label:lang.label">
+      <button class="lang-btn" type="button" data-lang="ru" lang="ru" aria-label="RU, русский" aria-pressed="false">RU</button>
+      <button class="lang-btn" type="button" data-lang="en" lang="en" aria-label="EN, English" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<noscript><p class="noscript">Странице нужен JavaScript, чтобы показать текст. This page needs JavaScript to show its text.</p></noscript>
+
+<main id="main">
+
+  <!-- 1. hero: the line is open, the download button is the break in it -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <div class="hero-back" aria-hidden="true"></div>
+    <p class="hero-eyebrow hero-in"><a class="chip" href="#status" data-t="hero.early"></a><span data-t="hero.eyebrow"></span></p>
+    <h1 class="hero-title hero-in" id="heroTitle"><span class="hero-title-text" id="heroTitleText" data-t="hero.title"></span><i class="hero-beam" aria-hidden="true"></i></h1>
+    <p class="hero-sub hero-in" data-t="hero.sub"></p>
+    <div class="wire hero-in">
+      <span class="wire-live" aria-hidden="true"><i class="wire-contact"></i></span>
+      <!-- The download button. Its state comes from DOWNLOAD_URL at the top of landing.js. -->
+      <a class="cta is-soon" href="#" data-download aria-describedby="noteHero" aria-disabled="true">
+        <span class="cta-label" data-t="cta.label"></span>
+        <span class="cta-chip" data-soon data-t="cta.soon"></span>
+      </a>
+      <span class="wire-dark" aria-hidden="true"><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i></span>
+      <p class="wire-note" id="noteHero" data-download-note></p>
+    </div>
+    <!-- the program itself, right under the button: the same file as the Verdict tab further down -->
+    <figure class="hero-shot hero-in">
+      <div class="frame hero-frame" data-screen="result"><img src="assets/screens/ru/result.webp" width="1860" height="1320" alt="" data-t-attr="alt:screen.result.alt"></div>
+      <figcaption class="viewer-note" data-t="screen.hero.caption"></figcaption>
+    </figure>
+    <ul class="trust hero-in" role="list">
+      <li data-t="trust.1"></li>
+      <li data-t="trust.2"></li>
+      <li data-t="trust.3"></li>
+      <li data-t="trust.4"></li>
+    </ul>
+    <div class="proof hero-in">
+      <p data-t="proof.smartscreen"></p>
+      <p class="proof-links"><span data-t="proof.label"></span><a data-proof="vt" target="_blank" rel="noopener" data-t="proof.vt" hidden></a><a data-proof="github" target="_blank" rel="noopener" data-t="proof.github"></a><a data-proof="source" target="_blank" rel="noopener" data-t="proof.source" hidden></a></p>
+    </div>
+  </section>
+
+  <!-- 1b. three stories: the pains the app settles -->
+  <section class="sec wrap" id="why" aria-labelledby="whyTitle">
+    <div class="sec-head">
+      <h2 class="h2" id="whyTitle" data-t="why.title"></h2>
+      <p class="lead" data-t="why.lead"></p>
+    </div>
+    <ul class="stories" role="list">
+      <li class="story ruled"><h3 class="story-title" data-t="why.1.title"></h3><p class="story-text" data-t="why.1.text"></p></li>
+      <li class="story ruled"><h3 class="story-title" data-t="why.2.title"></h3><p class="story-text" data-t="why.2.text"></p></li>
+      <li class="story ruled"><h3 class="story-title" data-t="why.3.title"></h3><p class="story-text" data-t="why.3.text"></p></li>
+    </ul>
+  </section>
+
+  <!-- 2. what it measures and what it tells you -->
+  <section class="sec wrap" id="verdict" aria-labelledby="verdictTitle">
+    <div class="sec-head">
+      <h2 class="h2" id="verdictTitle" data-t="verdict.title"></h2>
+      <p class="lead" data-t="verdict.lead"></p>
+    </div>
+
+    <h3 class="label" data-t="measure.title"></h3>
+    <ul class="measures" role="list">
+      <li class="measure ruled is-both"><span class="measure-name" data-t="measure.1"></span><span class="measure-note" data-t="measure.1.note"></span></li>
+      <li class="measure ruled is-cpu"><span class="measure-name" data-t="measure.2"></span><span class="measure-note" data-t="measure.2.note"></span></li>
+      <li class="measure ruled is-cpu"><span class="measure-name" data-t="measure.3"></span><span class="measure-note" data-t="measure.3.note"></span></li>
+      <li class="measure ruled is-gpu"><span class="measure-name" data-t="measure.4"></span><span class="measure-note" data-t="measure.4.note"></span></li>
+      <li class="measure ruled"><span class="measure-name" data-t="measure.5"></span><span class="measure-note" data-t="measure.5.note"></span></li>
+      <li class="measure ruled"><span class="measure-name" data-t="measure.6"></span><span class="measure-note" data-t="measure.6.note"></span></li>
+    </ul>
+
+    <!-- An example of the verdict. The bar is drawn in proportions only: no figures are claimed. -->
+    <div class="example">
+      <div class="example-top">
+        <span class="chip" data-t="example.label"></span>
+        <div class="picks" id="picks" role="tablist" data-t-attr="aria-label:example.pick">
+          <button class="pick" type="button" role="tab" id="pick-cpuThread" data-value="cpuThread" aria-controls="case-cpuThread" aria-selected="true" data-t="limit.cpuThread"></button>
+          <button class="pick" type="button" role="tab" id="pick-cpuAll" data-value="cpuAll" aria-controls="case-cpuAll" aria-selected="false" tabindex="-1" data-t="limit.cpuAll"></button>
+          <button class="pick" type="button" role="tab" id="pick-gpu" data-value="gpu" aria-controls="case-gpu" aria-selected="false" tabindex="-1" data-t="limit.gpu"></button>
+          <button class="pick" type="button" role="tab" id="pick-free" data-value="free" aria-controls="case-free" aria-selected="false" tabindex="-1" data-t="limit.free"></button>
+        </div>
+      </div>
+      <div class="verdicts">
+        <div class="verdict is-on" id="case-cpuThread" role="tabpanel" aria-labelledby="pick-cpuThread" data-case="cpuThread">
+          <h3 class="verdict-title" data-t="case.cpuThread.title"></h3>
+          <p class="verdict-text" data-t="case.cpuThread.text"></p>
+        </div>
+        <div class="verdict" id="case-cpuAll" role="tabpanel" aria-labelledby="pick-cpuAll" data-case="cpuAll">
+          <h3 class="verdict-title" data-t="case.cpuAll.title"></h3>
+          <p class="verdict-text" data-t="case.cpuAll.text"></p>
+        </div>
+        <div class="verdict" id="case-gpu" role="tabpanel" aria-labelledby="pick-gpu" data-case="gpu">
+          <h3 class="verdict-title" data-t="case.gpu.title"></h3>
+          <p class="verdict-text" data-t="case.gpu.text"></p>
+        </div>
+        <div class="verdict" id="case-free" role="tabpanel" aria-labelledby="pick-free" data-case="free">
+          <h3 class="verdict-title" data-t="case.free.title"></h3>
+          <p class="verdict-text" data-t="case.free.text"></p>
+        </div>
+      </div>
+      <div class="limit">
+        <div class="limit-head">
+          <h4 class="label" data-t="limit.title"></h4>
+          <span class="limit-unit" data-t="limit.unit"></span>
+        </div>
+        <div class="limit-scale" id="limitScale" aria-hidden="true"></div>
+        <div class="limitbar" id="limitbar" role="img">
+          <span class="seg seg-cpu" data-seg="cpuThread"></span>
+          <span class="seg seg-likely" data-seg="cpuLikely"></span>
+          <span class="seg seg-all" data-seg="cpuAll"></span>
+          <span class="seg seg-gpu" data-seg="gpu"></span>
+          <span class="seg seg-free" data-seg="free"></span>
+        </div>
+        <ul class="legend" id="legend" role="list">
+          <li data-seg="cpuThread"><i class="key key-cpu" aria-hidden="true"></i><span data-t="limit.cpuThread"></span></li>
+          <li data-seg="cpuLikely"><i class="key key-likely" aria-hidden="true"></i><span data-t="limit.cpuLikely"></span></li>
+          <li data-seg="cpuAll"><i class="key key-all" aria-hidden="true"></i><span data-t="limit.cpuAll"></span></li>
+          <li data-seg="gpu"><i class="key key-gpu" aria-hidden="true"></i><span data-t="limit.gpu"></span></li>
+          <li data-seg="free"><i class="key key-free" aria-hidden="true"></i><span data-t="limit.free"></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="h3 fix-title" data-t="fix.title"></h3>
+    <ul class="facts" role="list">
+      <li class="fact ruled"><h4 class="fact-title" data-t="fix.1.title"></h4><p class="fact-text" data-t="fix.1.text"></p></li>
+      <li class="fact ruled"><h4 class="fact-title" data-t="fix.2.title"></h4><p class="fact-text" data-t="fix.2.text"></p></li>
+      <li class="fact ruled"><h4 class="fact-title" data-t="fix.3.title"></h4><p class="fact-text" data-t="fix.3.text"></p></li>
+    </ul>
+
+    <p class="promise"><span data-t="promise.1"></span> <span data-t="promise.2"></span></p>
+  </section>
+
+  <!-- 3. how it works: three steps, and the screens of the app -->
+  <section class="sec wrap" id="how" aria-labelledby="howTitle">
+    <div class="sec-head">
+      <h2 class="h2" id="howTitle" data-t="how.title"></h2>
+    </div>
+    <div class="how">
+      <ol class="steps" role="list">
+        <li class="step"><span class="step-rank" aria-hidden="true">1</span><div><h3 class="step-title" data-t="how.1.title"></h3><p class="step-text" data-t="how.1.text"></p></div></li>
+        <li class="step"><span class="step-rank" aria-hidden="true">2</span><div><h3 class="step-title" data-t="how.2.title"></h3><p class="step-text" data-t="how.2.text"></p></div></li>
+        <li class="step"><span class="step-rank" aria-hidden="true">3</span><div><h3 class="step-title" data-t="how.3.title"></h3><p class="step-text" data-t="how.3.text"></p></div></li>
+      </ol>
+
+      <div class="viewer">
+        <div class="viewer-tabs" id="screenTabs" role="tablist" data-t-attr="aria-label:screens.label">
+          <button class="viewer-tab" type="button" role="tab" id="tab-start" data-value="start" aria-controls="screen-start" aria-selected="true" data-t="screen.start"></button>
+          <button class="viewer-tab" type="button" role="tab" id="tab-scan" data-value="scan" aria-controls="screen-scan" aria-selected="false" tabindex="-1" data-t="screen.scan"></button>
+          <button class="viewer-tab" type="button" role="tab" id="tab-result" data-value="result" aria-controls="screen-result" aria-selected="false" tabindex="-1" data-t="screen.result"></button>
+        </div>
+        <!-- SCREENS OF THE APP: files per language in assets/screens, named in SCREENS in landing.js. -->
+        <div class="frame" id="frame">
+          <div class="screen is-on" id="screen-start" role="tabpanel" aria-labelledby="tab-start" data-screen="start">
+            <img src="assets/screens/ru/start.webp" width="1860" height="1320" alt="" loading="lazy" data-t-attr="alt:screen.start.alt">
+          </div>
+          <div class="screen" id="screen-scan" role="tabpanel" aria-labelledby="tab-scan" data-screen="scan">
+            <img src="assets/screens/ru/scan.webp" width="1860" height="1320" alt="" loading="lazy" data-t-attr="alt:screen.scan.alt">
+          </div>
+          <div class="screen" id="screen-result" role="tabpanel" aria-labelledby="tab-result" data-screen="result">
+            <img src="assets/screens/ru/result.webp" width="1860" height="1320" alt="" loading="lazy" data-t-attr="alt:screen.result.alt">
+          </div>
+        </div>
+        <p class="viewer-note" data-t="screen.caption"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. what it checks -->
+  <section class="sec wrap" id="checks" aria-labelledby="checksTitle">
+    <div class="split">
+      <div class="split-aside">
+        <h2 class="h2" id="checksTitle" data-t="checks.title"></h2>
+        <p class="lead" data-t="checks.lead"></p>
+        <p class="aside-note ruled" data-t="checks.who"></p>
+      </div>
+      <ul class="checks" role="list">
+        <li class="check"><h3 class="check-title" data-t="check.1.title"></h3><p class="check-text" data-t="check.1.text"></p></li>
+        <li class="check"><h3 class="check-title" data-t="check.2.title"></h3><p class="check-text" data-t="check.2.text"></p></li>
+        <li class="check"><h3 class="check-title" data-t="check.3.title"></h3><p class="check-text" data-t="check.3.text"></p></li>
+        <li class="check"><h3 class="check-title" data-t="check.4.title"></h3><p class="check-text" data-t="check.4.text"></p></li>
+        <li class="check"><h3 class="check-title" data-t="check.5.title"></h3><p class="check-text" data-t="check.5.text"></p></li>
+        <li class="check"><h3 class="check-title" data-t="check.6.title"></h3><p class="check-text" data-t="check.6.text"></p></li>
+        <li class="check"><h3 class="check-title" data-t="check.7.title"></h3><p class="check-text" data-t="check.7.text"></p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5. safety and privacy -->
+  <section class="sec wrap" id="safety" aria-labelledby="safetyTitle">
+    <div class="sec-head">
+      <h2 class="h2" id="safetyTitle" data-t="safety.title"></h2>
+    </div>
+    <ul class="facts" role="list">
+      <li class="fact ruled"><h3 class="fact-title" data-t="safety.1.title"></h3><p class="fact-text" data-t="safety.1.text"></p></li>
+      <li class="fact ruled"><h3 class="fact-title" data-t="safety.2.title"></h3><p class="fact-text" data-t="safety.2.text"></p></li>
+      <li class="fact ruled"><h3 class="fact-title" data-t="safety.3.title"></h3><p class="fact-text" data-t="safety.3.text"></p></li>
+      <li class="fact ruled"><h3 class="fact-title" data-t="safety.4.title"></h3><p class="fact-text" data-t="safety.4.text"></p></li>
+    </ul>
+  </section>
+
+  <!-- 6. help from support inside the app, and what the report holds -->
+  <section class="sec wrap" id="support" aria-labelledby="supportTitle">
+    <div class="split">
+      <div class="split-aside">
+        <h2 class="h2" id="supportTitle" data-t="support.title"></h2>
+        <p class="lead" data-t="support.text"></p>
+        <p class="ticket" aria-hidden="true"><span class="chip" data-t="support.waiting"></span><i class="ticket-line"></i><span class="chip is-lit" data-t="support.answered"></span></p>
+        <!-- The author's line. Name and address come from AUTHOR_NAME and AUTHOR_URL in landing.js. -->
+        <p class="aside-note" data-author><span data-t="support.live"></span> <a class="link" data-author-link target="_blank" rel="noopener" data-t="support.live.link"></a></p>
+        <div class="contrib ruled">
+          <h3 class="contrib-title" data-t="contrib.title"></h3>
+          <p class="contrib-text" data-t="contrib.text"></p>
+        </div>
+      </div>
+      <div class="report">
+        <h3 class="report-title" data-t="report.title"></h3>
+        <div class="report-cols">
+          <div class="report-col ruled">
+            <h4 class="label" data-t="report.in.title"></h4>
+            <ul class="dots is-lit" role="list">
+              <li data-t="report.in.1"></li>
+              <li data-t="report.in.2"></li>
+              <li data-t="report.in.3"></li>
+              <li data-t="report.in.4"></li>
+              <li data-t="report.in.5"></li>
+            </ul>
+          </div>
+          <div class="report-col ruled is-dark">
+            <h4 class="label" data-t="report.out.title"></h4>
+            <ul class="dots is-dark" role="list">
+              <li data-t="report.out.1"></li>
+              <li data-t="report.out.2"></li>
+              <li data-t="report.out.3"></li>
+              <li data-t="report.out.4"></li>
+              <li data-t="report.out.5"></li>
+              <li data-t="report.out.6"></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. requirements, and what is not ready in this early version -->
+  <section class="sec wrap" id="requirements">
+    <div class="pair">
+      <div>
+        <div class="pair-head"><h2 class="h3" data-t="req.title"></h2></div>
+        <dl class="rows">
+          <div class="row"><dt data-t="req.os.k"></dt><dd data-t="req.os.v"></dd></div>
+          <div class="row"><dt data-t="req.install.k"></dt><dd data-t="req.install.v"></dd></div>
+          <div class="row"><dt data-t="req.game.k"></dt><dd data-t="req.game.v"></dd></div>
+          <div class="row"><dt data-t="req.obs.k"></dt><dd data-t="req.obs.v"></dd></div>
+          <div class="row"><dt data-t="req.admin.k"></dt><dd data-t="req.admin.v"></dd></div>
+          <div class="row"><dt data-t="req.lang.k"></dt><dd data-t="req.lang.v"></dd></div>
+          <div class="row"><dt data-t="req.update.k"></dt><dd data-t="req.update.v"></dd></div>
+          <div class="row"><dt data-t="req.price.k"></dt><dd data-t="req.price.v"></dd></div>
+        </dl>
+      </div>
+      <!-- Three short points; the full list lives in github\README.md (keep them in step). -->
+      <div class="status" id="status">
+        <div class="pair-head"><h2 class="h3" data-t="status.title"></h2><span class="chip" data-t="status.version"></span></div>
+        <ul class="dots is-dark" role="list">
+          <li data-t="status.1"></li>
+          <li data-t="status.2"></li>
+          <li data-t="status.3"></li>
+        </ul>
+        <p class="status-more"><a class="link" target="_blank" rel="noopener" data-t="status.more" data-t-attr="href:status.more.href"></a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. questions -->
+  <section class="sec wrap" id="faq" aria-labelledby="faqTitle">
+    <div class="split">
+      <div class="split-aside">
+        <h2 class="h2" id="faqTitle" data-t="faq.title"></h2>
+      </div>
+      <div class="faq">
+        <details class="qa" open><summary data-t="faq.0.q"></summary><p class="qa-a" data-t="faq.0.a"></p></details>
+        <details class="qa"><summary data-t="faq.7.q"></summary><p class="qa-a" data-t="faq.7.a"></p></details>
+        <details class="qa"><summary data-t="faq.1.q"></summary><p class="qa-a" data-t="faq.1.a"></p></details>
+        <details class="qa"><summary data-t="faq.6.q"></summary><p class="qa-a" data-t="faq.6.a"></p></details>
+        <details class="qa"><summary data-t="faq.2.q"></summary><p class="qa-a" data-t="faq.2.a"></p></details>
+        <details class="qa"><summary data-t="faq.3.q"></summary><p class="qa-a" data-t="faq.3.a"></p></details>
+        <details class="qa"><summary data-t="faq.4.q"></summary><p class="qa-a" data-t="faq.4.a"></p></details>
+        <details class="qa"><summary data-t="faq.5.q"></summary><p class="qa-a" data-t="faq.5.a"></p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. the last word: the same broken line -->
+  <section class="final" id="download" aria-labelledby="finalTitle">
+    <div class="final-back" aria-hidden="true"></div>
+    <h2 class="h2 final-title" id="finalTitle" data-t="final.title"></h2>
+    <p class="final-sub" data-t="final.sub"></p>
+    <div class="wire">
+      <span class="wire-live" aria-hidden="true"><i class="wire-contact"></i></span>
+      <a class="cta is-soon" href="#" data-download aria-describedby="noteFinal" aria-disabled="true">
+        <span class="cta-label" data-t="cta.label"></span>
+        <span class="cta-chip" data-soon data-t="cta.soon"></span>
+      </a>
+      <span class="wire-dark" aria-hidden="true"><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i><i class="ring"></i></span>
+      <p class="wire-note" id="noteFinal" data-download-note></p>
+    </div>
+    <p class="final-note" data-t="proof.smartscreen"></p>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p class="foot-note" data-t="footer.disclaimer"></p>
+    <div class="foot-links">
+      <!-- The author's line. Name and address come from AUTHOR_NAME and AUTHOR_URL in landing.js. -->
+      <p data-author><a data-author-link target="_blank" rel="noopener" data-t="footer.author"></a></p>
+      <p><a href="assets/fonts/OFL.txt" data-t="footer.font"></a></p>
+      <!-- CONTACT LINK PLACEHOLDER. When there is another public contact, uncomment the line and put the address in:
+      <p><a href="CONTACT_URL" data-t="footer.contact"></a></p>
+      -->
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
