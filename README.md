@@ -51,7 +51,7 @@
 - Режим ноутбука программа определяет сама только у ASUS. Для других марок она даёт инструкцию и судит по измеренной частоте процессора.
 - Температуру процессора программа не читает: без прав администратора Windows её не отдаёт. Перегрев виден косвенно, по падению частоты.
 - Цена замера в настоящей игре снята пока на одном компьютере: в среднем 0,5% одного ядра за четыре часа.
-- Потери до интернета меряются пингом до одного адреса (1.1.1.1). Такой сервер может отбрасывать пинг сам, поэтому находка «пакеты теряются у провайдера» может срабатывать зря: это ещё проверяется.
+- Потери до интернета меряются пингом сразу до двух адресов (1.1.1.1 и 8.8.8.8) и считаются, только когда не ответили оба. Где именно за роутером терялись пакеты, программа не видит. Если работает ускоритель для игр, совет так и говорит.
 
 ## О проекте
 
@@ -112,7 +112,7 @@ While reports are allowed, the app asks the server every 15 minutes (except duri
 - The app detects the laptop performance mode by itself only on ASUS. For other brands it gives instructions and judges by the measured CPU frequency.
 - The app does not read the CPU temperature: Windows does not give it out without administrator rights. Overheating shows indirectly, through frequency drops.
 - The cost of measuring in a real game has been taken on one computer so far: 0.5% of one core on average over four hours.
-- Loss to the internet is measured by pinging one address (1.1.1.1). Such a server may drop pings by itself, so the "packets are lost at the provider" finding may fire for nothing: this is still being checked.
+- Loss to the internet is measured by pinging two addresses at once (1.1.1.1 and 8.8.8.8) and counts only when neither answered. The app cannot see where exactly beyond the router packets were lost. When a game booster is running, the advice says so.
 
 ## About
 
